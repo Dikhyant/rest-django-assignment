@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template import loader
 from .models import Task, TaskModelForm
 from django.db.models import Count, Avg
+import requests
 import json
 
 
@@ -71,3 +72,26 @@ def report(request):
         'title': 'Task Report',
     }
     return render(request, 'report.html', context)
+
+
+def external_posts(request):
+    """
+    Example integration: fetch posts from a third-party API (JSONPlaceholder)
+    and display a few fields. Handles basic errors gracefully.
+    """
+    api_url = 'https://jsonplaceholder.typicode.com/posts'
+    posts = []
+    error_message = None
+    try:
+        response = requests.get(api_url, timeout=5)
+        response.raise_for_status()
+        # Limit to first 10 items for brevity
+        posts = response.json()[:10]
+    except requests.RequestException as exc:
+        error_message = f"Failed to load external data: {exc}"
+
+    return render(request, 'external_posts.html', {
+        'title': 'External Posts (JSONPlaceholder)',
+        'posts': posts,
+        'error_message': error_message,
+    })
