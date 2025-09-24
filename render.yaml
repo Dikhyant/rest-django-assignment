@@ -3,7 +3,10 @@ services:
     name: django-rest-assignment
     env: python
     plan: free
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r rest_project/requirements.txt
+    preDeployCommand: |
+      python -m django --settings=rest_project.settings collectstatic --noinput
+      python -m django --settings=rest_project.settings migrate --noinput
     startCommand: gunicorn rest_project.rest_project.wsgi:application --preload --workers=3 --threads=2 --timeout=120
     envVars:
       - key: DATABASE_URL
