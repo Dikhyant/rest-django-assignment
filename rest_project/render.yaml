@@ -7,7 +7,7 @@ services:
     preDeployCommand: |
       python rest_project/manage.py collectstatic --noinput
       python rest_project/manage.py migrate --noinput
-    startCommand: gunicorn rest_project.rest_project.wsgi:application --preload --workers=3 --threads=2 --timeout=120
+    startCommand: bash -lc "python rest_project/manage.py migrate --noinput && gunicorn rest_project.rest_project.wsgi:application --preload --workers=3 --threads=2 --timeout=120"
     envVars:
       - key: DATABASE_URL
         sync: false
