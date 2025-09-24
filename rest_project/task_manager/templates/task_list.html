@@ -2,7 +2,10 @@
 {% block content %}
 <header>
   <h1>Tasks</h1>
-  <a class="button" href="{% url 'task_create' %}">New Task</a>
+  <div class="actions">
+    <a class="button" href="{% url 'task_create' %}">New Task</a>
+    <a class="button secondary" href="{% url 'report' %}">View Report</a>
+  </div>
   
 </header>
 

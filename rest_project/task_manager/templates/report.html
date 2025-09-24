@@ -1,0 +1,71 @@
+{% extends 'index.html' %}
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  .charts { display: grid; grid-template-columns: 1fr; gap: 24px; }
+  @media (min-width: 800px) { .charts { grid-template-columns: 1fr 1fr; } }
+  canvas { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 12px; }
+</style>
+{% endblock %}
+{% block content %}
+<header>
+  <h1>{{ title }}</h1>
+  <div class="actions">
+    <a class="button secondary" href="{% url 'task_list' %}">Back to Tasks</a>
+  </div>
+</header>
+
+<div class="charts">
+  <div>
+    <h3>Tasks by Assignee</h3>
+    <canvas id="assigneeChart" height="200"></canvas>
+  </div>
+  <div>
+    <h3>Tasks by Priority</h3>
+    <canvas id="priorityChart" height="200"></canvas>
+  </div>
+</div>
+
+<script>
+  const assigneeLabels = JSON.parse('{{ assignee_labels_json|escapejs }}');
+  const assigneeTotals = JSON.parse('{{ assignee_totals_json|escapejs }}');
+  const priorityLabels = JSON.parse('{{ priority_labels_json|escapejs }}');
+  const priorityTotals = JSON.parse('{{ priority_totals_json|escapejs }}');
+
+  const palette = [
+    '#2563eb','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#84cc16','#f43f5e','#14b8a6','#eab308'
+  ];
+
+  new Chart(document.getElementById('assigneeChart'), {
+    type: 'bar',
+    data: {
+      labels: assigneeLabels,
+      datasets: [{
+        label: 'Tasks',
+        data: assigneeTotals,
+        backgroundColor: assigneeTotals.map((_, i) => palette[i % palette.length])
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, precision: 0 } }
+    }
+  });
+
+  new Chart(document.getElementById('priorityChart'), {
+    type: 'pie',
+    data: {
+      labels: priorityLabels,
+      datasets: [{
+        data: priorityTotals,
+        backgroundColor: priorityTotals.map((_, i) => palette[i % palette.length])
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'bottom' } }
+    }
+  });
+</script>
+{% endblock %}

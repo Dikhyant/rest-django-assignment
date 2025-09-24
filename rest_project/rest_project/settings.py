@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
-import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -86,16 +85,30 @@ WSGI_APPLICATION = 'rest_project.wsgi.application'
 
 # Database configuration
 # Use DATABASE_URL if provided (Render/Postgres). Fallback to local SQLite.
-database_url = os.environ.get('DATABASE_URL')
+_database_url = os.environ.get('DATABASE_URL')
 
-if database_url:
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=database_url,
-            conn_max_age=600,
-            ssl_require=not DEBUG,
-        )
-    }
+if _database_url:
+    try:
+        import dj_database_url  # type: ignore
+    except Exception:  # pragma: no cover - optional dependency for local runs
+        dj_database_url = None  # type: ignore
+
+    if dj_database_url is not None:
+        DATABASES = {
+            'default': dj_database_url.config(
+                default=_database_url,
+                conn_max_age=600,
+                ssl_require=not DEBUG,
+            )
+        }
+    else:
+        # Fallback to SQLite if dj_database_url is unavailable locally
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
 else:
     DATABASES = {
         'default': {
