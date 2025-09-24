@@ -1,0 +1,38 @@
+{% extends 'index.html' %}
+{% block content %}
+<header>
+  <h1>Tasks</h1>
+  <a class="button" href="{% url 'task_create' %}">New Task</a>
+  
+</header>
+
+<table>
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>Assignee</th>
+      <th>Date</th>
+      <th>Priority</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for t in tasks %}
+      <tr>
+        <td>{{ t.task }}</td>
+        <td>{{ t.assignee }}</td>
+        <td>{{ t.date }}</td>
+        <td>{{ t.priority }}</td>
+        <td class="actions">
+          <a class="button secondary" href="{% url 'task_update' t.pk %}">Edit</a>
+          <a class="button secondary" href="{% url 'task_delete' t.pk %}">Delete</a>
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="5">No tasks yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+
+

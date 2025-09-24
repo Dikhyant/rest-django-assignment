@@ -1,0 +1,100 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments (your venv folder is named "rest")
+.venv/
+venv/
+ENV/
+env/
+.venv*/
+venv*/
+env*/
+rest/
+Scripts/
+Include/
+pyvenv.cfg
+
+# Django
+*.log
+local_settings.py
+staticfiles/
+static/
+media/
+
+# SQLite databases
+*.sqlite3
+db.sqlite3
+
+# Unit test / coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Editor/IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.*
+
+# Typing / tools
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Sphinx
+docs/_build/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+logs/
+
